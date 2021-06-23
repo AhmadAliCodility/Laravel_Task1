@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use \App\Http\Controllers\CourseController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,7 +29,7 @@ Route::get('/test', function () {
 
 
 //todo-----------------------------------__COURSES__------------------------------------------\
-Route::resource('course',\App\Http\Controllers\CourseController::class);
+Route::resource('course',CourseController::class);
 
 
 
@@ -38,6 +38,6 @@ Route::resource('course',\App\Http\Controllers\CourseController::class);
 
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
