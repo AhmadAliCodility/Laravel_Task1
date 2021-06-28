@@ -58,8 +58,8 @@ class LoginController extends Controller
                 $request->get('remember')))
         {
 
-//            return redirect()->intended('/admin');
-            return redirect()->route('course.index');
+            return redirect()->intended('/admin');
+//            return redirect()->route('admin.index');
         }
         return back()->withInput($request->only('email', 'remember'));
     }

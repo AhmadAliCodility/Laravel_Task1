@@ -3,16 +3,19 @@
 @section('content')
 
     <div class="container">
-{{--        @hasanyrole('creator|admin')--}}
-        @can('create course')
-        <div class="px-6 py-4 whitespace-nowrap flex align-content-center">
-            <a href="{{route('course.create')}}"
-               class="bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50 py-2 px-4 rounded text-white text-decoration-none">
-                <i class="fas fa-plus-circle"></i> Create
-            </a>
+        <div class="px-6 py-4 whitespace-nowrap flex-row align-content-between">
+        @hasrole('admin')
+            <a href="{{route('roles.index')}}"
+               class="bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 py-2 px-4 rounded text-white text-decoration-none">Roles</a>
+
+            <a href="{{route('permissions.index')}}"
+               class="mx-3 bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 py-2 px-4 rounded text-white text-decoration-none">Permissions</a>
+        @endhasrole
+            <a href="{{route('course.index')}}"
+               class="bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 py-2 px-4 rounded text-white text-decoration-none">Courses</a>
+
         </div>
-    @endcan
-{{--        @endhasanyrole--}}
+
         <!-- This example requires Tailwind CSS v2.0+ -->
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -23,16 +26,13 @@
                             <tr>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Course Name
+                                    Admin Name
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Course Description
+                                    Admin Email
                                 </th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Course Price
-                                </th>
+
                                 {{--<th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Role
@@ -43,41 +43,33 @@
                             </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($course as $row)
+                            @foreach($admin as $row)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                <a href="{{route('course.show',$row->id)}}">{{\Illuminate\Support\Str::limit($row->course_name,20)}}</a>
+                                            <div class="text-sm font-medium text-gray-900 uppercase">
+                                                <a href="{{route('admin.show',$row->id)}}">{{$row->name}}</a>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div
-                                            class="text-sm text-gray-900">{{\Illuminate\Support\Str::limit($row->description,70)}}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            &#36; {{$row->price}}
-                                            </span>
+                                            class="text-sm text-gray-900">{{$row->email}}</div>
                                     </td>
 
+                                    {{--    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    Admin
+                                    </td>--}}
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-{{--                                        @hasanyrole('editor|admin')--}}
-                                        @can('edit course')
-                                        <a href="{{route('course.edit',$row->id)}}"
-                                           class="bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 py-2 px-4 rounded text-white text-decoration-none"><i class="fas fa-edit "></i></a>
-{{--                                        @endhasanyrole--}}
-                                        @endcan
-{{--                                        @hasanyrole('destroyer|admin')--}}
-                                        @can('delete course')
+                                        <a href="{{route('admin.edit',$row->id)}}"
+                                           class="bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 py-2 px-4 rounded text-white text-decoration-none"><i
+                                                class="fas fa-edit "></i></a>
+
+
                                         <button
                                             class="bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50 py-2 px-4 rounded text-white text-decoration-none"
                                             onclick="handleDelete({{$row->id}})"><i class="fas fa-trash-alt "></i>
                                         </button>
-                                        @endcan
-{{--                                        @endhasanyrole--}}
 
 
                                     </td>
@@ -149,7 +141,7 @@
     <script>
         function handleDelete(id) {
             var form = document.getElementById('deleteCategoryForm')
-            form.action = '/course/' + id  // for delete in route list 'category/{category}'
+            form.action = '/admin/' + id  // for delete in route list 'category/{category}'
             console.log('deleting.', form)
             $('#deleteModal').modal('show')
         }
