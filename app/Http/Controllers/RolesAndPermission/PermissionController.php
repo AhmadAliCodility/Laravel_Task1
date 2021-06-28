@@ -4,13 +4,14 @@ namespace App\Http\Controllers\RolesAndPermission;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('role:admin');
+        $this->middleware('role:admin');
     }
     public function index()
     {
@@ -35,9 +36,31 @@ class PermissionController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(Permission $permission)
     {
+        return view('RolesAndPermission.Permissions.edit',compact('permission'));
 
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required|unique:permissions,name',
+        ]);
+
+        $role = Permission::where('id',$id)->update([
+            'name' => $request->input('name')
+        ]);
+
+
+        return redirect()->route('permissions.index');
+    }
+
+    public function destroy($id)
+    {
+        DB::table("permissions")->where('id',$id)->delete();
+
+        return redirect()->route('permissions.index');
     }
 
 
