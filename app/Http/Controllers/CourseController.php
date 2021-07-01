@@ -10,6 +10,18 @@ use Illuminate\Http\Request;
 class CourseController extends Controller
 {
     /**
+     * CourseController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('permission:create course|edit course|delete course', ['only' => ['index','store']]);
+        $this->middleware('permission:create course', ['only' => ['create','store']]);
+        $this->middleware('permission:edit course', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete course', ['only' => ['destroy']]);
+    }
+
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
