@@ -34,14 +34,16 @@ Route::post('/register/admin', [RegisterController::class, 'createAdmin']);
 Route::get('logout', [LoginController::class, 'logout']);
 
 Route::group(['middleware' => 'auth:admin'], function () {
-
     Route::resource('admin', AdminController::class);
     Route::resource('roles', RolesController::class);
     Route::resource('permissions', PermissionController::class);
+
 //todo-----------------------------------__COURSES__------------------------------------------
     Route::resource('course', CourseController::class);
 
 });
+
+
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
